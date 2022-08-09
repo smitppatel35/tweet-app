@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    password: Smit@0987
+    username: root
+    url: jdbc:mysql://localhost:3306/tweet_app
+  application:
+    name: Tweet App
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: ${kafka_bootstrap_servers:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+server:
+  port: 8081
+logging:
+  level:
+    com.tweetapp: DEBUG
+  file:
+    path: logs
+    name: logs/tweet-app.log
