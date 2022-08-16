@@ -72,7 +72,7 @@ services:
     - esdata:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=false
@@ -176,3 +176,27 @@ services:
     command: bin/logstash -f /usr/share/logstash/config-dir/logstash.conf
     depends_on:
       - elasticsearch
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+    - "9090:9090"
+    volumes:
+    - ./prometheus:/etc/prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yaml"
+    depends_on:
+      - tweet-app
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    restart: always
+    ports:
+    - "3000:3000"
+    links:
+      - prometheus:prometheus
+    volumes:
+    - ./grafana/data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost
