@@ -28,4 +28,5 @@ public interface TweetService {
 
     // get all tweets
     List<TweetDTO> getAllTweets() throws EmptyResourceContentException;
+
 }

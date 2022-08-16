@@ -3,6 +3,7 @@ package com.tweetapp.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tweetapp.constants.KafkaConstants;
+import com.tweetapp.dtos.SuccessResponse;
 import com.tweetapp.dtos.request.TweetRequest;
 import com.tweetapp.dtos.response.TweetDTO;
 import com.tweetapp.exception.EmptyResourceContentException;
@@ -23,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/api/v1.0/tweets")
 @Tag(name = "Tweet", description = "Manage Tweets")
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class TweetController {
 
     private final TweetService tweetService;
@@ -30,7 +32,7 @@ public class TweetController {
     private final ObjectMapper objectMapper;
 
     @PostMapping("/{username}/add")
-    public ResponseEntity<String> addTweet(
+    public ResponseEntity<SuccessResponse> addTweet(
             @PathVariable("username") String username,
             @Valid @RequestBody TweetRequest tweetRequest) throws JsonProcessingException {
 
@@ -39,7 +41,7 @@ public class TweetController {
         payload.put("tweetRequest", tweetRequest.getTweet());
 
         kafkaTemplate.send(KafkaConstants.TOPIC_ADD_TWEET, objectMapper.writeValueAsString(payload));
-        return ResponseEntity.ok("Tweet Published");
+        return ResponseEntity.ok(new SuccessResponse("Tweet Published"));
     }
 
     @GetMapping("/all")
@@ -54,29 +56,29 @@ public class TweetController {
     }
 
     @PutMapping("/{username}/like/{id}")
-    public ResponseEntity<String> like(
+    public ResponseEntity<SuccessResponse> like(
             @PathVariable("username") String username,
             @PathVariable("id") int id) throws ResourceNotFoundException {
         tweetService.like(username, id);
-        return ResponseEntity.ok("Tweet liked");
+        return ResponseEntity.ok(new SuccessResponse("Tweet liked"));
     }
 
     @PostMapping("/{username}/reply/{id}")
-    public ResponseEntity<String> reply(
+    public ResponseEntity<SuccessResponse> reply(
             @PathVariable("username") String username,
             @PathVariable("id") int id,
             @RequestBody TweetRequest tweetRequest) throws ResourceNotFoundException {
         tweetService.reply(username, id, tweetRequest);
-        return ResponseEntity.ok("Tweet Reply Published");
+        return ResponseEntity.ok(new SuccessResponse("Tweet Reply Published"));
     }
 
     @PutMapping("/{username}/update/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<SuccessResponse> update(
             @PathVariable("username") String username,
             @PathVariable("id") int id,
             @RequestBody TweetRequest tweetRequest) throws ResourceNotFoundException {
         tweetService.update(username, id, tweetRequest);
-        return ResponseEntity.ok("Tweet updated");
+        return ResponseEntity.ok(new SuccessResponse("Tweet updated"));
     }
 
     @DeleteMapping("/{username}/delete/{id}")

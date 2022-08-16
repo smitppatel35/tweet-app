@@ -1,5 +1,6 @@
 package com.tweetapp.controller;
 
+import com.tweetapp.dtos.SuccessResponse;
 import com.tweetapp.dtos.request.ForgotPasswordRequest;
 import com.tweetapp.dtos.request.LoginRequest;
 import com.tweetapp.dtos.request.RegistrationRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1.0/tweets")
 @Tag(name = "User", description = "Manage Users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -28,7 +30,7 @@ public class UserController {
     public ResponseEntity<Object> register(@Valid @RequestBody RegistrationRequest registrationRequest)
             throws ResourceAlreadyExistsException {
         userService.register(registrationRequest);
-        return new ResponseEntity<>("Register", HttpStatus.CREATED);
+        return new ResponseEntity<>(new SuccessResponse("Register"), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")

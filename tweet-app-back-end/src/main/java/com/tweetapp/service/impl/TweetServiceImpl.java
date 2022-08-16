@@ -17,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -132,7 +130,7 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public List<TweetDTO> getAllTweets() throws EmptyResourceContentException {
-        List<TweetDTO> list = tweetRepository.findAll().stream().map(this::tweetEntityToDTO).collect(Collectors.toList());
+        List<TweetDTO> list = tweetRepository.findAll().stream().sorted((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt())).map(this::tweetEntityToDTO).collect(Collectors.toList());
 
         if (list.isEmpty()) {
             throw new EmptyResourceContentException("No Tweets posted");
@@ -149,7 +147,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     private TweetDTO tweetEntityToDTO(TweetEntity tweetEntity) {
-        List<ReplyDTO> reply = tweetEntity.getReply().stream().map(this::replyEntityToDTO).collect(Collectors.toList());
+        List<ReplyDTO> reply = tweetEntity.getReply().stream().sorted((o1, o2) -> o2.getUpdatedAt().compareTo(o1.getUpdatedAt())).map(this::replyEntityToDTO).collect(Collectors.toList());
 
         TweetDTO tweet = new TweetDTO();
 

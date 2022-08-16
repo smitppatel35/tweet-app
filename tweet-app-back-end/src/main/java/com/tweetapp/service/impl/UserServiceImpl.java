@@ -35,10 +35,8 @@ public class UserServiceImpl implements UserService {
         userEntity.setGender(registrationRequest.getGender());
         userEntity.setContact(registrationRequest.getContactNumber());
         userEntity.setUserId(extractUserIdFromEmail(registrationRequest.getEmail()));
-
-//        set Avatar -> random uuid for images
-//        userEntity.setAvatar();
-
+        userEntity.setAvatar("https://avatars.dicebear.com/api/"+ registrationRequest.getGender() +"/"+ registrationRequest.getEmail() +".svg");
+//
         try {
             userRepository.save(userEntity);
         } catch (Exception ex) {
@@ -66,9 +64,9 @@ public class UserServiceImpl implements UserService {
     public void forgot(String username, ForgotPasswordRequest forgotPasswordRequest) throws ResourceNotFoundException {
         UserEntity userEntity = validateUsername(username);
 
-        if (!userEntity.getPassword().equals(forgotPasswordRequest.getCurrentPassword())) {
-            throw new ResourceNotFoundException("Invalid Password!");
-        }
+//        if (!userEntity.getPassword().equals(forgotPasswordRequest.getCurrentPassword())) {
+//            throw new ResourceNotFoundException("Invalid Password!");
+//        }
 
         userEntity.setPassword(forgotPasswordRequest.getNewPassword());
         userRepository.save(userEntity);
@@ -95,6 +93,7 @@ public class UserServiceImpl implements UserService {
         dto.setLastName(userEntity.getLastName());
         dto.setGender(userEntity.getGender());
         dto.setAvatar(userEntity.getAvatar());
+        dto.setUsername(userEntity.getUserId());
 
         return dto;
     }

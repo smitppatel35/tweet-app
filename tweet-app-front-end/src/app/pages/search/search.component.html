@@ -1,0 +1,32 @@
+<div>
+  <form>
+    <div class="input-group">
+      <input (ngModelChange)="search()" name="tweet" [(ngModel)] = "query" class="form-control" size="6" aria-label="Post Something" placeholder="Type username" />
+    </div>
+  </form>
+</div>
+
+<div *ngFor="let user of userList">
+  <div class="my-3 rounded box-shadow">
+    <div class="media text-muted">
+      <div class="media text-muted border-bottom border-gray">
+        <div class="row">
+          <div class="col-1">
+            <img alt="32x32" class="mr-2 rounded"
+                 data-holder-rendered="true" data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1"
+                 src="{{user.avatar}}"
+                 width="60px">
+          </div>
+          <div class="col-9 mb-3">
+            <p class="media-body pb-3 mb-0 small lh-125">
+              <strong class="d-block text-gray-dark">@{{ user.username }}</strong>
+              <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+              <br>
+              {{ user.gender }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,3 @@
+<div class="ps-2 pe-2" *ngFor="let tweet of tweetList">
+  <app-tweet-card (refreshEvent)="refreshComponent()" [tweet]="tweet"></app-tweet-card>
+</div>

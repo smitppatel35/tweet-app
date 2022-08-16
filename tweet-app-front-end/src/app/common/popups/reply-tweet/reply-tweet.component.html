@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit Tweet</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="input-group">
+    <input class="form-control" type="text" [(ngModel)] = "tweetReply"  name="tweetUpdated" placeholder="Write Something" >
+  </div>
+
+  <div class="mb-lg-5">
+    <button (click)="submit()" class="btn btn-primary mt-2 ps-2 pe-2 float-end">Reply Tweet</button>
+  </div>
+
+  <div *ngFor="let reply of replyList">
+    <div class="my-3 rounded box-shadow">
+      <div class="media text-muted">
+        <div class="media text-muted border-bottom border-gray">
+          <div class="row">
+            <div class="col-2">
+              <img alt="32x32" class="mr-2 rounded"
+                   data-holder-rendered="true" data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1"
+                   src="https://avatars.dicebear.com/api/avataaars/{{ reply.username }}.svg"
+                   width="60px">
+            </div>
+            <div class="col mb-2">
+              <p class="media-body pb-3 mb-0 mt-2 small lh-125">
+                <strong class="d-block text-gray-dark">@{{ reply.username }}</strong>
+                <strong>{{ reply.firstName }} {{ reply.lastName }}</strong>
+                <br>
+                {{ reply.reply }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

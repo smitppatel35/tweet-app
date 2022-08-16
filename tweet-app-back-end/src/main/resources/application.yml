@@ -1,6 +1,6 @@
 spring:
   datasource:
-    password: Smit@0987
+    password: pass@word1
     username: root
     url: jdbc:mysql://localhost:3306/tweet_app
   application:

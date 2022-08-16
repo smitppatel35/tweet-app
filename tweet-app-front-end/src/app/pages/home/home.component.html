@@ -1,0 +1,22 @@
+
+<div>
+  <form>
+    <div class="input-group">
+      <textarea [disabled]="!isAuthenticated" name="tweet" [(ngModel)] = "tweet" class="form-control" size="6" aria-label="Post Something" placeholder="Say Something"></textarea>
+    </div>
+    <div class="mb-lg-5">
+      <button [disabled]="!isAuthenticated" (click)="post()" class="btn btn-primary mt-2 ps-2 pe-2 float-end">Post Tweet</button>
+    </div>
+  </form>
+</div>
+
+<br>
+<div *ngIf="isAuthenticated">
+  <div class="ps-2 pe-2" *ngFor="let tweet of tweetList">
+    <app-tweet-card (refreshEvent)="refreshComponent()" [tweet]="tweet"></app-tweet-card>
+  </div>
+</div>
+
+<div *ngIf="!isAuthenticated" class="ps-2 pe-2" >
+ <p>Please Login</p>
+</div>

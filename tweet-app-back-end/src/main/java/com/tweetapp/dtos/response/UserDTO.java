@@ -21,6 +21,8 @@ public class UserDTO {
     @NotBlank
     private String email;
 
+    private String username;
+
     @Size(min = 10, max = 10, message = "Contact Number should be 10 char long.")
     private String contactNumber;
     private String gender;
