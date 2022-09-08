@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,13 +33,15 @@ public class TweetController {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/{username}/add")
+    @PostMapping("/add")
     public ResponseEntity<SuccessResponse> addTweet(
-            @PathVariable("username") String username,
             @Valid @RequestBody TweetRequest tweetRequest) throws JsonProcessingException {
 
         Map<String, Object> payload = new HashMap<>();
-        payload.put("username", username);
+        payload.put("username", tweetRequest.getUsername());
+        payload.put("email", tweetRequest.getEmail());
+        payload.put("gender", tweetRequest.getGender());
+        payload.put("name", tweetRequest.getName());
         payload.put("tweetRequest", tweetRequest.getTweet());
 
         kafkaTemplate.send(KafkaConstants.TOPIC_ADD_TWEET, objectMapper.writeValueAsString(payload));

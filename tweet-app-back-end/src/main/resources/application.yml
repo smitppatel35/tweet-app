@@ -1,18 +1,23 @@
 spring:
   datasource:
-    password: Smit@0987
-    username: root
-    url: jdbc:mysql://localhost:3306/tweet_app
+    password: ${AWS_RDS_DB_PASSWORD:Smit@0987}
+    username: ${AWS_RDS_DB_USERNAME:root}
+    url: jdbc:mysql://${AWS_RDS_DB_URL:localhost}:3306/tweet_app
   application:
     name: Tweet App
   jpa:
     hibernate:
       ddl-auto: update
   kafka:
-    bootstrap-servers: ${kafka_bootstrap_servers:localhost:9092}
+    bootstrap-servers: ${kafka_bootstrap_servers:localhost:29092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_QWVbTtcmV
 server:
   port: 8081
 logging:

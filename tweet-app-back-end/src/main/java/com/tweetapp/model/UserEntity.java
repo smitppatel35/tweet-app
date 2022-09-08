@@ -12,29 +12,23 @@ import java.time.LocalDateTime;
 @Data
 public class UserEntity {
 
+    // sub
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
 
+    //email
     @Column(nullable = false, unique = true)
     private String email;
 
+    // email -> @username
     @Column(nullable = false, unique = true)
     private String userId;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String firstName;
-
-    private String lastName;
+    private String name;
     private String gender;
-
-    @Column(length = 10, unique = true)
-    private String contact;
-
     private String avatar;
+
 
     @Column(updatable = false)
     @CreationTimestamp

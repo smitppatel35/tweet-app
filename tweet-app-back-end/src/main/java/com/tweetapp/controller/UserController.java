@@ -12,10 +12,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1.0/tweets")
@@ -29,7 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody RegistrationRequest registrationRequest)
             throws ResourceAlreadyExistsException {
-        userService.register(registrationRequest);
+//        userService.register(registrationRequest);
         return new ResponseEntity<>(new SuccessResponse("Register"), HttpStatus.CREATED);
     }
 

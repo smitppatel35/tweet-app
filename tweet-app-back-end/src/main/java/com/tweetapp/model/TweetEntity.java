@@ -25,7 +25,7 @@ public class TweetEntity {
     @OneToOne
     private UserEntity userId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     private List<ReplyEntity> reply;
 
     @Column(columnDefinition = "integer default 0")

@@ -67,15 +67,13 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public void delete(String username, String tweetId) throws ResourceNotFoundException {
         UserEntity userEntity = validateUsername(username);
-        Optional<TweetEntity> tweetEntity = tweetRepository.findById(Integer.parseInt(tweetId));
+        Optional<TweetEntity> tweetEntity = tweetRepository.findByIdAndUserId_UserId(Integer.parseInt(tweetId), username);
         if (tweetEntity.isEmpty()) {
             throw new ResourceNotFoundException("Tweet Not Found!");
         }
 
-        if (tweetEntity.get().getUserId() == userEntity) {
-            tweetRepository.delete(tweetEntity.get());
-            log.debug("User: {} deleted tweetId: {}", username, tweetId);
-        }
+        tweetRepository.delete(tweetEntity.get());
+        log.debug("User: {} deleted tweetId: {}", username, tweetId);
 
     }
 
@@ -139,7 +137,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     private UserEntity validateUsername(String username) throws ResourceNotFoundException {
-        Optional<UserEntity> optional = userRepository.findByUserId(username);
+        Optional<UserEntity> optional = userRepository.findById(username);
         if (optional.isPresent()) return optional.get();
         else {
             throw new ResourceNotFoundException("Invalid Username: " + username);
@@ -151,16 +149,17 @@ public class TweetServiceImpl implements TweetService {
 
         TweetDTO tweet = new TweetDTO();
 
+        String avatarURL = "https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/";
+
         tweet.setTweetId(tweetEntity.getId());
         tweet.setTweet(tweetEntity.getTweet());
         tweet.setLikes(tweetEntity.getLikes());
-        tweet.setUserId(tweetEntity.getUserId().getId());
-        tweet.setFirstName(tweetEntity.getUserId().getFirstName());
-        tweet.setLastName(tweetEntity.getUserId().getLastName());
+        tweet.setUserId(tweetEntity.getUserId().getUserId());
+        tweet.setFirstName(tweetEntity.getUserId().getName());
         tweet.setUsername(tweetEntity.getUserId().getUserId());
-        tweet.setAvatar(tweetEntity.getUserId().getAvatar());
         tweet.setTimestamp(tweetEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         tweet.setEdited(!tweetEntity.getCreateAt().equals(tweetEntity.getUpdatedAt()));
+        tweet.setAvatar(avatarURL + tweetEntity.getUserId().getId() + ".svg");
         tweet.setReply(reply);
 
         return tweet;
@@ -175,11 +174,9 @@ public class TweetServiceImpl implements TweetService {
         dto.setReplyId(replyEntity.getId());
         dto.setTimestamp(replyEntity.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         dto.setEdited(!replyEntity.getCreateAt().equals(replyEntity.getUpdatedAt()));
-        dto.setFirstName(userEntity.getFirstName());
-        dto.setLastName(userEntity.getLastName());
+        dto.setFirstName(userEntity.getName());
         dto.setUsername(userEntity.getUserId());
-        dto.setAvatar(userEntity.getAvatar());
-        dto.setUserId(userEntity.getId());
+        dto.setUserId(userEntity.getUserId());
 
         return dto;
     }

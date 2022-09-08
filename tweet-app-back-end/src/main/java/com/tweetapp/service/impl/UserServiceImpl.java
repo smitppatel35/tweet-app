@@ -1,5 +1,6 @@
 package com.tweetapp.service.impl;
 
+import com.tweetapp.dtos.UserRequest;
 import com.tweetapp.dtos.request.ForgotPasswordRequest;
 import com.tweetapp.dtos.request.LoginRequest;
 import com.tweetapp.dtos.request.RegistrationRequest;
@@ -25,18 +26,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void register(RegistrationRequest registrationRequest) throws ResourceAlreadyExistsException {
+    public void register(UserRequest user) throws ResourceAlreadyExistsException {
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setPassword(registrationRequest.getPassword());
-        userEntity.setEmail(registrationRequest.getEmail());
-        userEntity.setFirstName(registrationRequest.getFirstName());
-        userEntity.setLastName(registrationRequest.getLastName());
-        userEntity.setGender(registrationRequest.getGender());
-        userEntity.setContact(registrationRequest.getContactNumber());
-        userEntity.setUserId(extractUserIdFromEmail(registrationRequest.getEmail()));
-        userEntity.setAvatar("https://avatars.dicebear.com/api/"+ registrationRequest.getGender() +"/"+ registrationRequest.getEmail() +".svg");
-//
+        userEntity.setId(user.getUsername());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setName(user.getName());
+        userEntity.setGender(user.getGender());
+        userEntity.setAvatar("https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/"+user.getUsername() + ".svg");
+        userEntity.setUserId(extractUserIdFromEmail(user.getEmail()));
+
         try {
             userRepository.save(userEntity);
         } catch (Exception ex) {
@@ -46,13 +45,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO login(LoginRequest loginRequest) throws ResourceNotFoundException {
-        UserEntity userEntity = validateUsername(loginRequest.getEmail());
-
-        if (!userEntity.getPassword().equals(loginRequest.getPassword())) {
-            throw new ResourceNotFoundException("Invalid Username or Password!");
-        }
-
-        return entityToDTO(userEntity);
+//        UserEntity userEntity = validateUsername(loginRequest.getEmail());
+////
+////        if (!userEntity.getPassword().equals(loginRequest.getPassword())) {
+////            throw new ResourceNotFoundException("Invalid Username or Password!");
+////        }
+////
+        return null;
     }
 
     @Override
@@ -62,15 +61,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void forgot(String username, ForgotPasswordRequest forgotPasswordRequest) throws ResourceNotFoundException {
-        UserEntity userEntity = validateUsername(username);
+//        UserEntity userEntity = validateUsername(username);
 
 //        if (!userEntity.getPassword().equals(forgotPasswordRequest.getCurrentPassword())) {
 //            throw new ResourceNotFoundException("Invalid Password!");
 //        }
-
-        userEntity.setPassword(forgotPasswordRequest.getNewPassword());
-        userRepository.save(userEntity);
-        log.debug("Password reset for User: {}", username);
+//
+//        userEntity.setPassword(forgotPasswordRequest.getNewPassword());
+//        userRepository.save(userEntity);
+//        log.debug("Password reset for User: {}", username);
     }
 
     @Override
@@ -88,9 +87,7 @@ public class UserServiceImpl implements UserService {
         UserDTO dto = new UserDTO();
 
         dto.setEmail(userEntity.getEmail());
-        dto.setContactNumber(userEntity.getContact());
-        dto.setFirstName(userEntity.getFirstName());
-        dto.setLastName(userEntity.getLastName());
+        dto.setFirstName(userEntity.getName());
         dto.setGender(userEntity.getGender());
         dto.setAvatar(userEntity.getAvatar());
         dto.setUsername(userEntity.getUserId());
@@ -98,8 +95,9 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
-    private UserEntity validateUsername(String username) throws ResourceNotFoundException {
-        Optional<UserEntity> optional = userRepository.findByEmail(username);
+    @Override
+    public UserEntity validateUsername(String username) throws ResourceNotFoundException {
+        Optional<UserEntity> optional = userRepository.findById(username);
         if (optional.isPresent()) return optional.get();
         else {
             throw new ResourceNotFoundException("Invalid Username: " + username);

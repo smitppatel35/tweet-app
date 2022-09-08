@@ -12,7 +12,7 @@ public class TweetDTO {
     private String tweet;
     private Long likes;
     private String timestamp;
-    private Integer userId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String username;
