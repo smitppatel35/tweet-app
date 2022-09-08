@@ -23,7 +23,10 @@
               <button class="btn btn-sm btn-outline-success" (click)="openReplyModal()" ><fa-icon [icon]="faReply"></fa-icon> {{ tweet.reply.length == 0 ? "Reply" : tweet.reply.length }}</button>
             </div>
             <div class="col-md-auto" *ngIf="username === tweet.username">
-              <button type="button" class="btn btn-sm btn-primary" (click)="openEditModal()"><fa-icon [icon]="faEdit"></fa-icon> Edit</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEditModal()"><fa-icon [icon]="faEdit"></fa-icon> Edit</button>
+            </div>
+            <div class="col-md-auto" *ngIf="username === tweet.username">
+              <button type="button" class="btn btn-sm btn-warning" (click)="deleteTweet(tweet.tweetId)"><fa-icon [icon]="faDelete"></fa-icon> Delete</button>
             </div>
           </div>
         </div>

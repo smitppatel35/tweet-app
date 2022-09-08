@@ -1,4 +1,11 @@
-<form [formGroup]="form" class="form-signin">
+
+<div class="message">
+  <h1>Access to this page is restricted</h1>
+  <p>Please login or register to use the tweet app.</p>
+</div>
+<button class="btn btn-lg btn-outline-secondary p-2 mt-3" (click)="login()"> Login/Register </button>
+
+<!-- <form [formGroup]="form" class="form-signin">
   <h2>Tweet App</h2>
   <h1 class="h5 mb-3 font-weight-normal">Please sign in</h1>
   <input class="form-control" formControlName="email" id="inputEmail" name="email" placeholder="Email address"
@@ -21,4 +28,4 @@
   <p><a href="/auth/forgot-password">Forgot Password?</a> </p>
 
 </form>
-
+ -->

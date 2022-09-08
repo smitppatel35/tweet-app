@@ -15,10 +15,7 @@ export class SearchComponent implements OnInit {
   userList: User[] = [];
 
   constructor(private _userService: UserService, private router: Router, private cookieService: CookieService) {
-    let username = this.cookieService.get("username");
-    if( username.trim().length === 0 || username === '' && username === undefined) {
-      this.router.navigate(['/auth/login']);
-    }
+   
   }
 
   ngOnInit(): void {

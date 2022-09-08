@@ -3,10 +3,11 @@ import {BehaviorSubject, catchError, map, Observable, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {CookieService} from "ngx-cookie-service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {ApiPaths} from "../ApiPaths";
 import {Tweet} from "../../models/Tweet";
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 interface Login {
   email: string;
@@ -19,11 +20,28 @@ interface Login {
 export class UserService {
   private API_URL = environment.API_URL;
 
-  constructor(private router: Router, private cookieService: CookieService, private http: HttpClient) {
+  constructor(
+    private router: Router, 
+    private cookieService: CookieService, 
+    private http: HttpClient,
+    public oidcSecurityService: OidcSecurityService) {
   }
 
   getAllUserProfiles(){
-    return this.http.get(this.API_URL + ApiPaths.TWEET_BASE_PATH + "users/all").pipe(
+    var accessToken;
+
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      accessToken = token;
+    });
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    });
+    
+    return this.http.get(this.API_URL + ApiPaths.TWEET_BASE_PATH + "users/all", {
+      headers: headers
+    }).pipe(
       map((data: User[]) => {
         return data;
       }), catchError(err => {
@@ -69,8 +87,11 @@ export class UserService {
     });
   }
 
-  logout() {
-    this.cookieService.delete("username");
-    this.router.navigate(['/auth/login']);
-  }
+  // logout() {
+  //   console.log("Logging off");
+    
+  //   this.cookieService.delete("username");
+  //   this.oidcSecurityService.logoffAndRevokeTokens();
+  //   this.router.navigate(['/home']);
+  // }
 }

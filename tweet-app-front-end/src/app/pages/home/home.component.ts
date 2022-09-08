@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Tweet} from "../../models/Tweet";
 import {TweetService} from "../../services/tweet/tweet.service";
-import {parseJson} from "@angular/cli/utilities/json-file";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 
@@ -18,10 +17,10 @@ export class HomeComponent implements OnInit {
   tweetList: Tweet[] = [];
 
   constructor(private _tweetService: TweetService, private router: Router, private cookieService: CookieService) {
-    let username = this.cookieService.get("username");
-    if( username.trim().length === 0 || username === '' && username === undefined) {
-      this.router.navigate(['/auth/login']);
-    }
+    // let username = this.cookieService.get("username");
+    // if( username.trim().length === 0 || username === '' && username === undefined) {
+    //   this.router.navigate(['/auth/login']);
+    // }
   }
 
   ngOnInit(): void {

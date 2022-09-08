@@ -3,6 +3,7 @@ import {User} from "../../models/User";
 import {UserService} from "../../services/user/user.service";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,21 +12,19 @@ import {Router} from "@angular/router";
 })
 export class SidebarComponent implements OnInit {
 
-  user: User = new User("", "","", "", "", "", "");
 
-  constructor(private router: Router, private userService: UserService, private cookieService: CookieService) { }
+  avatar: string;
+  name: string;
+  username: string;
+
+  constructor(public oidcSecurityService: OidcSecurityService) { }
 
   ngOnInit(): void {
-    let username = this.cookieService.get("username");
-
-    if (username && username !== '') {
-      this.userService.profile(username).subscribe(data => {
-        this.user = data[0];
-      });
-    } else {
-      this.router.navigate(['/']);
-    }
-
+    this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated, userData }) => {
+      this.avatar = `https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/${userData['username']}.svg`
+      this.name = userData['name'];
+      this.username = userData['email'].split("@")[0];
+    });
   }
 
 }

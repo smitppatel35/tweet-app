@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
+import {UntypedFormBuilder, UntypedFormGroup, Validator, Validators} from "@angular/forms";
 import {UserService} from "../../services/user/user.service";
 
 @Component({
@@ -9,7 +9,7 @@ import {UserService} from "../../services/user/user.service";
 })
 export class RegisterComponent implements OnInit {
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   get password() {
     return this.form.get('password');
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _userService: UserService
   ) { }
 

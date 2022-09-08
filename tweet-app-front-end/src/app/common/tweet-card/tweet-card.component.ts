@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import {faHeart, faTrash} from "@fortawesome/free-solid-svg-icons";
 import { faReply } from '@fortawesome/free-solid-svg-icons';
 import {Tweet} from "../../models/Tweet";
 import {TweetService} from "../../services/tweet/tweet.service";
@@ -21,6 +21,7 @@ export class TweetCardComponent implements OnInit {
   faLike = faHeart;
   faReply = faReply;
   faEdit = faEdit;
+  faDelete = faTrash;
 
   username = this.cookieService.get("username");
 
@@ -57,4 +58,8 @@ export class TweetCardComponent implements OnInit {
     this.callParentToRefresh();
   }
 
+  deleteTweet(id: string) {
+    this._tweetService.delete(id);
+    this.callParentToRefresh();
+  }
 }

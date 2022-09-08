@@ -22,6 +22,8 @@ import { TweetsComponent } from './pages/tweets/tweets.component';
 import { UsersComponent } from './pages/users/users.component';
 import { SearchComponent } from './pages/search/search.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { AuthConfigModule } from './auth/auth-config.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
     FontAwesomeModule,
     FormsModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthConfigModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

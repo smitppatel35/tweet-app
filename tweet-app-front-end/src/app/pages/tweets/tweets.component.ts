@@ -14,10 +14,10 @@ export class TweetsComponent implements OnInit {
   tweetList: Tweet[] = [];
 
   constructor(private _tweetService: TweetService, private router: Router, private cookieService: CookieService) {
-    let username = this.cookieService.get("username");
-    if( username.trim().length === 0 || username === '' && username === undefined) {
-      this.router.navigate(['/auth/login']);
-    }
+    // let username = this.cookieService.get("username");
+    // if( username.trim().length === 0 || username === '' && username === undefined) {
+    //   this.router.navigate(['/auth/login']);
+    // }
   }
 
   ngOnInit(): void {
