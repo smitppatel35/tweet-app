@@ -9,7 +9,7 @@ volumes:
     driver: local
   tweet-app-data:
     driver: local
-  mysqldata:
+  prom-data:
     driver: local
 
 services:
@@ -113,17 +113,6 @@ services:
     volumes:
     - certs:/usr/share/kibana/config/certs
     - kibanadata:/usr/share/kibana/data
-  mysql:
-    container_name: tweet-app-mysql
-    image: mysql:latest
-    restart: always
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: Smit@0987
-      MYSQL_DATABASE: tweet_app
   zookeeper:
     container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
