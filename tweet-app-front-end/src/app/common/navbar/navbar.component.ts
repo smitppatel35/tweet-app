@@ -12,6 +12,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class NavbarComponent implements OnInit {
 
   isAuthenticated = false;
+  isCollapsed = false;
 
   constructor(
     private userService: UserService,

@@ -1,24 +1,16 @@
 <div *ngFor="let user of userList">
-  <div class="my-3 rounded box-shadow">
-    <div class="media text-muted">
-      <div class="media text-muted border-bottom border-gray">
-        <div class="row">
-          <div class="col-1">
-            <img alt="32x32" class="mr-2 rounded"
-                 data-holder-rendered="true" data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1"
-                 src="{{user.avatar}}"
-                 width="60px">
-          </div>
-          <div class="col-9 mb-3">
-            <p class="media-body pb-3 mb-0 small lh-125">
-              <strong class="d-block text-gray-dark">@{{ user.username }}</strong>
-              <strong>{{ user.firstName }}</strong>
-              <br>
-              {{ user.gender }}
-            </p>
+  <div class="card mb-2">
+    <div class="card-body">
+      <div class="d-flex justify-content-start align-items-center mb-1">
+        <div class="avatar me-1">
+          <img src="{{user.avatar}}" alt="avatar img" height="50" width="50">
+        </div>
+        <div class="profile-user-info">
+          <strong class="d-block">@{{ user.username }}</strong>
+          <h6 class="mb-0">{{ user.firstName }} {{ user.lastName }}</h6>
+          {{ user.gender }}
         </div>
       </div>
     </div>
-  </div>
   </div>
 </div>

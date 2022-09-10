@@ -22,11 +22,13 @@ export class EditTweetComponent implements OnInit {
   submit(){
     this._tweetService.updateTweet(this.tweetId, this.tweetUpdated).subscribe(res => {
       console.log(res);
+      this.activeModal.close();
     }, error => {
       console.log(error);
+      this.activeModal.close();
     });
 
     // console.log(this.tweetUpdated);
-    this.activeModal.close();
+    
   }
 }

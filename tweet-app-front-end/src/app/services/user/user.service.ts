@@ -69,7 +69,20 @@ export class UserService {
   }
 
   profile(username: string): Observable<User[]> {
-    return this.http.get(this.API_URL + ApiPaths.TWEET_BASE_PATH + "search/" + username).pipe(
+    var accessToken;
+
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      accessToken = token;
+    });
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    });
+
+    return this.http.get(this.API_URL + ApiPaths.TWEET_BASE_PATH + "search/" + username, {
+      headers: headers
+    }).pipe(
       map((data: User[]) => {
         return data;
       }), catchError(err => {

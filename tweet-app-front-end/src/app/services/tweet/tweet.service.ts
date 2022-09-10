@@ -58,7 +58,7 @@ export class TweetService {
 
   // tweet CRUD
 
-  save(message: string){
+  save(message: string): Observable<any>{
     var accessToken;
 
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
@@ -70,14 +70,13 @@ export class TweetService {
       'Authorization': `Bearer ${accessToken}`
     });
 
-    let username = this.cookieService.get("username");
-    this.http.post(this.API_URL + ApiPaths.TWEET_BASE_PATH + "add", 
+    return this.http.post(this.API_URL + ApiPaths.TWEET_BASE_PATH + "add", 
     new TweetRequest(this.user, message), {
       headers: headers
-    }).subscribe();
+    });
   }
 
-  updateTweet(id: string, message: string) {
+  updateTweet(id: string, message: string): Observable<any> {
     var accessToken;
 
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
@@ -90,7 +89,7 @@ export class TweetService {
     });
 
     let username = this.cookieService.get("username");
-    return this.http.put(this.API_URL + ApiPaths.TWEET_BASE_PATH + username + "/update/" + id, new TweetRequest(this.user, message), {
+    return this.http.put(this.API_URL + ApiPaths.TWEET_BASE_PATH + this.user['username'] + "/update/" + id, new TweetRequest(this.user, message), {
       headers: headers
     });
   }
@@ -120,7 +119,7 @@ export class TweetService {
     );
   }
 
-  likeTweet(id: string) {
+  likeTweet(id: string): Observable<any> {
     var accessToken;
 
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
@@ -132,13 +131,12 @@ export class TweetService {
       'Authorization': `Bearer ${accessToken}`
     });
 
-    let username = this.cookieService.get("username");
-    this.http.put(this.API_URL + ApiPaths.TWEET_BASE_PATH + username + "/like/"+id, null, {
+    return this.http.put(this.API_URL + ApiPaths.TWEET_BASE_PATH + this.user['username'] + "/like/"+id, null, {
       headers: headers
-    }).subscribe();
+    });
   }
 
-  replyTweet(id: string, message: string){
+  replyTweet(id: string, message: string): Observable<any>{
     var accessToken;
 
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
@@ -150,13 +148,12 @@ export class TweetService {
       'Authorization': `Bearer ${accessToken}`
     });
 
-    let username = this.cookieService.get("username");
-    this.http.post(this.API_URL + ApiPaths.TWEET_BASE_PATH + username + "/reply/" + id, new TweetRequest(this.user, message), {
+    return this.http.post(this.API_URL + ApiPaths.TWEET_BASE_PATH + this.user['username'] + "/reply/" + id, new TweetRequest(this.user, message), {
       headers: headers
-    }).subscribe();
+    });
   }
 
-  delete(id: string) {
+  delete(id: string): Observable<any> {
     var accessToken;
 
     this.oidcSecurityService.getAccessToken().subscribe((token) => {
@@ -168,10 +165,8 @@ export class TweetService {
       'Authorization': `Bearer ${accessToken}`
     });
 
-    console.log(id);
-    let username = this.cookieService.get("username");
-    this.http.delete(this.API_URL + ApiPaths.TWEET_BASE_PATH + username + "/delete/"+id, {
+    return this.http.delete(this.API_URL + ApiPaths.TWEET_BASE_PATH + this.user['username'] + "/delete/"+id, {
       headers: headers
-    }).subscribe();
+    });
   }
 }

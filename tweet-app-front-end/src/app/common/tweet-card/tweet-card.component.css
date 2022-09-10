@@ -1,3 +1,77 @@
 .lh-125{
   line-height: 1.25;
 }
+
+.card {
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+  transition: all 0.3s ease-in-out, background 0s, color 0s, border-color 0s;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.5rem 1.5rem;
+}
+
+.avatar {
+  white-space: nowrap;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+.avatar img {
+  border-radius: 50%;
+}
+
+p {
+  line-height: 1.5rem;
+}
+
+fieldset {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.form-label {
+  margin-bottom: 0.2857rem;
+  font-size: 0.857rem;
+  color: #5e5873;
+}
+
+label {
+  display: inline-block;
+}
+
+textarea.form-control {
+  line-height: 1.6rem;
+  padding: 0.8rem 1rem !important;
+}
+
+textarea.form-control {
+  min-height: 2.714rem;
+}
+
+.mb-75 {
+  margin-bottom: 0.75rem !important;
+}
+
+.demo-inline-spacing > * {
+  margin-right: 0.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem !important;
+}
+
+.pb-50 {
+  padding-bottom: 0.5rem !important;
+}

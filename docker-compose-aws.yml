@@ -1,0 +1,42 @@
+version: '3.7'
+
+volumes:
+  tweet-app-data:
+    driver: local
+
+services:
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+  tweet-app:
+    container_name: tweet-app
+    image: 454273937687.dkr.ecr.ap-south-1.amazonaws.com/tweet-app:oauth
+    restart: always
+    volumes:
+      - tweet-app-data:/logs
+    environment:
+      AWS_RDS_DB_PASSWORD: smit0987
+      AWS_RDS_DB_USERNAME: admin
+      AWS_RDS_DB_URL: tweet-app-db-1.co3nhsyjkfla.ap-south-1.rds.amazonaws.com
+      kafka_bootstrap_servers: kafka:9092
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kafka

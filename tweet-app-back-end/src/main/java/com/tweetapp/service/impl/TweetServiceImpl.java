@@ -66,8 +66,8 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public void delete(String username, String tweetId) throws ResourceNotFoundException {
-        UserEntity userEntity = validateUsername(username);
-        Optional<TweetEntity> tweetEntity = tweetRepository.findByIdAndUserId_UserId(Integer.parseInt(tweetId), username);
+        validateUsername(username);
+        Optional<TweetEntity> tweetEntity = tweetRepository.findById(Integer.parseInt(tweetId));
         if (tweetEntity.isEmpty()) {
             throw new ResourceNotFoundException("Tweet Not Found!");
         }
@@ -169,6 +169,8 @@ public class TweetServiceImpl implements TweetService {
         UserEntity userEntity = replyEntity.getUserId();
         ReplyDTO dto = new ReplyDTO();
 
+        String avatarURL = "https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/";
+
         dto.setReply(replyEntity.getReply());
         dto.setLikes(replyEntity.getLikes());
         dto.setReplyId(replyEntity.getId());
@@ -177,6 +179,7 @@ public class TweetServiceImpl implements TweetService {
         dto.setFirstName(userEntity.getName());
         dto.setUsername(userEntity.getUserId());
         dto.setUserId(userEntity.getUserId());
+        dto.setAvatar(avatarURL + userEntity.getId() + ".svg");
 
         return dto;
     }

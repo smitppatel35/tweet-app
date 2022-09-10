@@ -18,13 +18,12 @@ export class AuthGuard implements CanActivate {
     var auth = false;
 
     this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData}) => {
-      console.log(isAuthenticated);
-
+      
       if(!isAuthenticated){
         // this.oidcSecurityService.authorize();
         this.router.navigate(['/auth/login'])
       } else {
-        this.cookieService.set('username', userData['username'], 0.25, "/", "localhost", true);
+        this.cookieService.set('username', userData['username'], 100, "/", "*", true);
         auth = true;
       }
      

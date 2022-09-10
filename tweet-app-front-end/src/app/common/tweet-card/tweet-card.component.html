@@ -1,4 +1,4 @@
-<div class="my-3 rounded box-shadow">
+<!-- <div class="my-3 rounded box-shadow">
   <div class="media text-muted">
     <div class="media text-muted border-bottom border-gray">
       <div class="row">
@@ -16,8 +16,8 @@
             {{ tweet.tweet }}
           </p>
           <div class="row">
-            <div class="col-md-auto">
-              <button (click)="like(tweet.tweetId)" class="btn btn-sm btn-outline-danger"><fa-icon [icon]="faLike"></fa-icon> {{ tweet.likes == "0" ? "Like" : tweet.likes }}</button>
+            <div class="col-md-auto" >
+              <button [disabled]="username === tweet.username" (click)="like(tweet.tweetId)" class="btn btn-sm btn-outline-danger"><fa-icon [icon]="faLike"></fa-icon> {{ tweet.likes == "0" ? "Like" : tweet.likes }}</button>
             </div>
             <div class="col-md-auto">
               <button class="btn btn-sm btn-outline-success" (click)="openReplyModal()" ><fa-icon [icon]="faReply"></fa-icon> {{ tweet.reply.length == 0 ? "Reply" : tweet.reply.length }}</button>
@@ -35,5 +35,60 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+ -->
+
+
+<div class="card mb-2">
+  <div class="card-body">
+    <div class="d-flex justify-content-start align-items-center mb-1">
+      <div class="avatar me-1">
+        <img src="{{tweet.avatar}}" alt="avatar img" height="50" width="50">
+      </div>
+      <div class="profile-user-info">
+        <h6 class="mb-0">{{ tweet.firstName }} {{ tweet.lastName }}</h6>
+        <small class="text-muted">{{ tweet.timestamp }}</small>
+      </div>
+    </div>
+    <p class="card-text">{{ tweet.tweet }}</p>
+
+  
+    <div class="row d-flex justify-content-start align-items-center flex-wrap pb-50">
+      <div class="col-sm-6 d-flex justify-content-between justify-content-sm-start mb-2 demo-inline-spacing">
+        <button [disabled]="username === tweet.username" (click)="like(tweet.tweetId)" class="btn btn-sm btn-primary mr-5"><fa-icon [icon]="faLike"></fa-icon> {{ tweet.likes == "0" ? "Like" : tweet.likes }}</button>
+      
+        <div class="ml-3" *ngIf="username === tweet.username">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="openEditModal()"><fa-icon [icon]="faEdit"></fa-icon> Edit</button>
+        </div>
+      </div>
+
+      <!-- share and like count and icons -->
+      <div class="col-sm-6 d-flex justify-content-between justify-content-sm-end align-items-center mb-2" *ngIf="username === tweet.username">
+        <button type="button" class="btn btn-sm btn-danger" (click)="deleteTweet(tweet.tweetId)"><fa-icon [icon]="faDelete"></fa-icon> Delete</button>
+      </div>
+      <!-- share and like count and icons -->
+    </div>
+
+    <div class="d-flex align-items-start mb-1" *ngFor="let r of tweet.reply">
+      <div class="avatar mt-25 me-50">
+        <img src="{{ r.avatar }}" alt="Avatar" height="34" width="34">
+      </div>
+      <div class="profile-user-info w-100">
+        <div class="d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 mr-1">@{{ r.username }}</h6>
+        </div>
+        <small class="text-muted">{{ r.timestamp }}</small>
+        <p class="card-text">{{ r.reply }}</p>
+      </div>
+    </div>
+
+    <fieldset class="mb-75">
+      <label class="form-label" for="label-textarea2">Add Comment</label>
+      <textarea [(ngModel)]="reply" class="form-control" id="label-textarea2" rows="1" placeholder="Add Comment"></textarea>
+    </fieldset>
+
+  <button type="button" (click)="replyTweet(tweet.tweetId)" class="btn btn-sm btn-primary waves-effect waves-float waves-light">Post Comment</button>
   </div>
 </div>

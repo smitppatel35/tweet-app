@@ -18,7 +18,7 @@ public class ReplyEntity {
     private Integer id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Tweet can't be blank")
+    @NotBlank(message = "Reply can't be blank")
     private String reply;
 
     @OneToOne

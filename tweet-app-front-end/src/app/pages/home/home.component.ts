@@ -28,9 +28,13 @@ export class HomeComponent implements OnInit {
   }
 
   post(){
-    this._tweetService.save(this.tweet);
-    this.tweet='';
-    this.refreshComponent();
+    this._tweetService.save(this.tweet).subscribe(res => {
+      this.tweet='';
+      this.refreshComponent();
+    }, error => {
+      console.log(error);
+    });
+    
   }
 
   refreshComponent(){

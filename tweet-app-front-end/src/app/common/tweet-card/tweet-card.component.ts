@@ -8,6 +8,7 @@ import {EditTweetComponent} from "../popups/edit-tweet/edit-tweet.component";
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import {ReplyTweetComponent} from "../popups/reply-tweet/reply-tweet.component";
 import {CookieService} from "ngx-cookie-service";
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'app-tweet-card',
@@ -23,9 +24,19 @@ export class TweetCardComponent implements OnInit {
   faEdit = faEdit;
   faDelete = faTrash;
 
+  reply: string = '';
+
   username = this.cookieService.get("username");
 
-  constructor(private _tweetService: TweetService, private modalService: NgbModal, private cookieService: CookieService) { }
+  constructor(
+    private _tweetService: TweetService, 
+    private modalService: NgbModal, 
+    private cookieService: CookieService,
+    public oidcSecurityService: OidcSecurityService) { 
+      oidcSecurityService.checkAuth().subscribe(({userData}) => {
+        this.username = userData['email'].split("@")[0];
+      });
+  }
 
   ngOnInit(): void {
   }
@@ -38,6 +49,12 @@ export class TweetCardComponent implements OnInit {
     const modelRef = this.modalService.open(EditTweetComponent);
     modelRef.componentInstance.tweet = this.tweet.tweet;
     modelRef.componentInstance.tweetId = this.tweet.tweetId;
+
+    modelRef.result.then(res => {
+      this.refreshEvent.emit('refresh');
+    }).catch((res) => {
+      console.log(res);
+    });
   }
 
   openReplyModal() {
@@ -46,7 +63,8 @@ export class TweetCardComponent implements OnInit {
     modelRef.componentInstance.tweetId = this.tweet.tweetId;
 
     modelRef.result.then(res => {
-      this.refreshEvent.emit();
+      this.refreshEvent.emit('refresh');
+      console.log(res);
     }).catch((res) => {
       console.log(res);
     });
@@ -54,12 +72,27 @@ export class TweetCardComponent implements OnInit {
   }
 
   like(id: string){
-    this._tweetService.likeTweet(id);
-    this.callParentToRefresh();
+    this._tweetService.likeTweet(id).subscribe(res => {
+      this.callParentToRefresh();
+    }, error => {
+      console.log(error['error']['message']);
+    });
+    
+  }
+
+  replyTweet(tweetId) {
+    this._tweetService.replyTweet(tweetId, this.reply).subscribe(res => {
+      this.callParentToRefresh();
+    }, error => {
+      console.log(error['error']['message']);
+    });
   }
 
   deleteTweet(id: string) {
-    this._tweetService.delete(id);
-    this.callParentToRefresh();
+    this._tweetService.delete(id).subscribe(res => {
+      this.callParentToRefresh();
+    }, error => {
+      console.log(error['error']['message']);
+    });
   }
 }

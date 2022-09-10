@@ -11,7 +11,7 @@ import { AuthModule } from 'angular-auth-oidc-client';
             clientId: '6mkppu1sqo64ce0uaf21lqsi90',
             scope: 'openid profile', // 'openid profile ' + your scopes
             responseType: 'code',
-            silentRenew: false,
+            silentRenew: true,
             silentRenewUrl: window.location.origin + '/silent-renew.html',
             renewTimeBeforeTokenExpiresInSeconds: 10,
         }

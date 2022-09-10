@@ -22,9 +22,16 @@ export class ReplyTweetComponent implements OnInit {
   }
 
   submit() {
-    this._tweetService.replyTweet(this.tweetId, this.tweetReply);
-    this.tweetReply = '';
+    this._tweetService.replyTweet(this.tweetId, this.tweetReply).subscribe(res => {
+      console.log(res);
+      this.tweetReply = '';
+      this.activeModal.close("close click");
+    }, error => {
+      this.tweetReply = '';
+      this.activeModal.close("close click");
+      console.log(error);
+    });
+    
 
-    this.activeModal.close("close click");
   }
 }
