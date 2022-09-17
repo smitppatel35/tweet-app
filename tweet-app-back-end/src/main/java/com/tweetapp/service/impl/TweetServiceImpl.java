@@ -149,7 +149,7 @@ public class TweetServiceImpl implements TweetService {
 
         TweetDTO tweet = new TweetDTO();
 
-        String avatarURL = "https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/";
+        String avatarURL = "https://tweet-app-avatars.s3.us-east-1.amazonaws.com/";
 
         tweet.setTweetId(tweetEntity.getId());
         tweet.setTweet(tweetEntity.getTweet());
@@ -169,7 +169,7 @@ public class TweetServiceImpl implements TweetService {
         UserEntity userEntity = replyEntity.getUserId();
         ReplyDTO dto = new ReplyDTO();
 
-        String avatarURL = "https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/";
+        String avatarURL = "https://tweet-app-avatars.s3.us-east-1.amazonaws.com/";
 
         dto.setReply(replyEntity.getReply());
         dto.setLikes(replyEntity.getLikes());

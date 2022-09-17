@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated, userData }) => {
-      this.avatar = `https://tweet-app-avatars.s3.ap-south-1.amazonaws.com/${userData['username']}.svg`
+      this.avatar = `https://tweet-app-avatars.s3.us-east-1.amazonaws.com/${userData['username']}.svg`
       this.name = userData['name'];
       this.username = userData['email'].split("@")[0];
     });

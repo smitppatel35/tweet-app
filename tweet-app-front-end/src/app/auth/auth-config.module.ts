@@ -5,10 +5,10 @@ import { AuthModule } from 'angular-auth-oidc-client';
 @NgModule({
     imports: [AuthModule.forRoot({
         config: {
-            authority: 'https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_QWVbTtcmV',
+            authority: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Y5EI1inok',
             redirectUrl: window.location.origin,
             postLogoutRedirectUri: window.location.origin,
-            clientId: '6mkppu1sqo64ce0uaf21lqsi90',
+            clientId: '2nordg6elfrplj1tt4767n3110',
             scope: 'openid profile', // 'openid profile ' + your scopes
             responseType: 'code',
             silentRenew: true,

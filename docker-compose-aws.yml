@@ -8,7 +8,7 @@ volumes:
 
 services:
   prometheus:
-    image: 454273937687.dkr.ecr.ap-south-1.amazonaws.com/prometheus:latest
+    image: 454273937687.dkr.ecr.us-east-1.amazonaws.com/prometheus:latest
     container_name: prometheus-custom
     restart: always
     ports:
@@ -37,14 +37,14 @@ services:
       - zookeeper
   tweet-app:
     container_name: tweet-app
-    image: 454273937687.dkr.ecr.ap-south-1.amazonaws.com/tweet-app:oauth
+    image: 454273937687.dkr.ecr.us-east-1.amazonaws.com/tweet-app:latest
     restart: always
     volumes:
       - tweet-app-data:/logs
     environment:
       AWS_RDS_DB_PASSWORD: smit0987
       AWS_RDS_DB_USERNAME: admin
-      AWS_RDS_DB_URL: tweet-app-db-1.co3nhsyjkfla.ap-south-1.rds.amazonaws.com
+      AWS_RDS_DB_URL: database-1.cjieqxibuwug.us-east-1.rds.amazonaws.com
       kafka_bootstrap_servers: kafka:9092
     ports:
       - "8081:8081"
